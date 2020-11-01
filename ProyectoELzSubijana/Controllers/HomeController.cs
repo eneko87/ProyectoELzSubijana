@@ -4,16 +4,33 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProyectoELzSubijana.Data;
 using ProyectoELzSubijana.Models;
 
 namespace ProyectoELzSubijana.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+        // public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        /* De aqui en adelante: se añade código para mostrar imagenes de los productos existentes
+            en la base de datos */
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
         }
+        public async Task<IActionResult> Index() // Se anula retornar solo la vista de Index, para generar la vista de Index con los productos
+        {
+            return View(await _context.Producto.ToListAsync());
+        }
+        // Fin de comentario
 
         public IActionResult About()
         {
